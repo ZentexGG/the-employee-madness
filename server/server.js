@@ -14,6 +14,13 @@ const app = express();
 
 app.use(express.json());
 
+
+app.get("/api/employees/", async (req, res) => {
+  let empName = req.query.name ? req.query.name : "";
+  const employees = await EmployeeModel.find({name: {"$regex": empName, "$options": "i"}}).sort({ created: "desc" });
+  return res.json(employees);
+});
+
 app.use("/api/employees/:id", async (req, res, next) => {
   let employee = null;
 
@@ -30,12 +37,6 @@ app.use("/api/employees/:id", async (req, res, next) => {
   req.employee = employee;
   next();
 });
-
-app.get("/api/employees/", async (req, res) => {
-  const employees = await EmployeeModel.find().sort({ created: "desc" });
-  return res.json(employees);
-});
-
 app.get("/api/employees/:id", (req, res) => {
   return res.json(req.employee);
 });
