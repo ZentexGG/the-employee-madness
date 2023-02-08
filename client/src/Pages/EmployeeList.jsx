@@ -6,13 +6,19 @@ const fetchEmployees = (signal) => {
   return fetch("/api/employees", { signal }).then((res) => res.json());
 };
 
+const fetchEmployeesByName = (signal, empName) => {
+  return fetch(`/api/employees?name=${empName}`, { signal }).then((res) =>
+    res.json()
+  );
+};
+
 const deleteEmployee = (id) => {
   return fetch(`/api/employees/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
   );
 };
 
-const EmployeeList = () => {
+const EmployeeList = ({ nameFilter }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
@@ -29,17 +35,31 @@ const EmployeeList = () => {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetchEmployees(controller.signal)
-      .then((employees) => {
-        setLoading(false);
-        setData(employees);
-      })
-      .catch((error) => {
-        if (error.name !== "AbortError") {
-          setData(null);
-          throw error;
-        }
-      });
+    if (nameFilter) {
+      fetchEmployeesByName(controller.signal, nameFilter)
+        .then((employees) => {
+          setLoading(false);
+          setData(employees);
+        })
+        .catch((error) => {
+          if (error.name !== "AbortError") {
+            setData(null);
+            throw error;
+          }
+        });
+    } else {
+      fetchEmployees(controller.signal)
+        .then((employees) => {
+          setLoading(false);
+          setData(employees);
+        })
+        .catch((error) => {
+          if (error.name !== "AbortError") {
+            setData(null);
+            throw error;
+          }
+        });
+    }
 
     return () => controller.abort();
   }, []);
