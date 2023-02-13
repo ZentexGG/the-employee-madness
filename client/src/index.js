@@ -13,6 +13,7 @@ import Robert from "./Pages/Robert"
 import "./index.css";
 import TableTest from "./Pages/TableTest";
 import FormTest from "./Pages/FormTest";
+import ManageEquipment from "./Pages/ManageEquipment";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/robert",
         element: <Robert />
+      },
+      {
+        path: "/equipment",
+        element: <ManageEquipment />
       }
     ],
   },

@@ -6,7 +6,11 @@ const mongoose = require("mongoose");
 const names = require("./names.json");
 const levels = require("./levels.json");
 const positions = require("./positions.json");
+const equipments = require("./equipment.json");
+const equipmentTypes = require('./equipmentTypes.json');
+
 const EmployeeModel = require("../db/employee.model");
+const EquipmentModel = require("../db/equipment.model");
 
 const mongoUrl = process.env.MONGO_URL;
 
@@ -30,10 +34,24 @@ const populateEmployees = async () => {
   console.log("Employees created");
 };
 
+const populateEquipment = async () => {
+  await EquipmentModel.deleteMany({});
+
+  const equipment = equipments.map((name) => ({
+    name,
+    type: pick(equipmentTypes),
+    amount: Math.floor(Math.random() * (250 - 50 + 1) + 50)
+  }));
+
+  await EquipmentModel.create(...equipment);
+  console.log("Equipment created");
+}
+
 const main = async () => {
   await mongoose.connect(mongoUrl);
 
   await populateEmployees();
+  await populateEquipment();
 
   await mongoose.disconnect();
 };

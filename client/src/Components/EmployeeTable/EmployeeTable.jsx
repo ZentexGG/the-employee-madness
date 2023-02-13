@@ -1,8 +1,29 @@
 import { Link } from "react-router-dom";
 import "./EmployeeTable.css";
 
-const EmployeeTable = ({ employees, onDelete }) => (
+const EmployeeTable = ({
+  employees,
+  onDelete,
+  selectFilter,
+  searchInput,
+  sortEmployees,
+}) => (
   <div className="EmployeeTable">
+    <input onInput={(e) => searchInput(e.target.value)} />
+    <select onChange={(e) => selectFilter(e.target.selectedOptions[0].value)}>
+      <option value="level">Level</option>
+      <option value="position">Position</option>
+    </select>
+
+    <p>Arrange by:</p>
+    <select onChange={(e) => sortEmployees(e.target.selectedOptions[0].value)}>
+      <option value="firstName">First name</option>
+      <option value="middleName">Middle name</option>
+      <option value="lastName">Last name</option>
+      <option value="position">Position</option>
+      <option value="level">Level</option>
+    </select>
+
     <table>
       <thead>
         <tr>

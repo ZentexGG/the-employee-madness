@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
+const equipmentModel = require("./db/equipment.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -13,6 +14,49 @@ if (!MONGO_URL) {
 const app = express();
 
 app.use(express.json());
+
+app.use("/api/equipment/:id", async (req, res, next) => {
+  let equipment = null;
+
+  try {
+    equipment = await equipmentModel.findById(req.params.id);
+  } catch (err) {
+    return next(err);
+  }
+
+  if (!equipment) {
+    return res.status(404).end("Equipment not found");
+  }
+
+  req.equipment = equipment;
+  next();
+});
+
+app.get("/api/equipment/", async (req, res) => {
+  const equipment = await equipmentModel.find({}).lean();
+  return res.json(equipment);
+})
+
+app.post("/api/equipment/", async (req, res, next) => {
+  const equipment = req.body;
+
+  try {
+    const saved = await equipmentModel.create(employee);
+    return res.json(saved);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+app.delete("/api/equipment/:id", async (req, res, next) => {
+  try {
+    const deleted = await req.equipment.delete();
+    return res.json(deleted);
+  } catch (err) {
+    return next(err);
+  }
+});
+
 
 
 app.get("/api/employees/", async (req, res) => {
