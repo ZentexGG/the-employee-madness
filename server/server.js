@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const equipmentModel = require("./db/equipment.model");
+const EquipmentTypes = require("./db/type.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -32,16 +33,31 @@ app.use("/api/equipment/:id", async (req, res, next) => {
   next();
 });
 
+app.get("/api/equipment/:id", (req, res) => {
+  return res.json(req.equipment);
+});
 app.get("/api/equipment/", async (req, res) => {
   const equipment = await equipmentModel.find({}).lean();
   return res.json(equipment);
 })
 
+app.patch("/api/equipment/:id", async (req, res, next) => {
+  const equipment = req.body;
+
+  try {
+    const updated = await req.equipment.set(equipment).save();
+    return res.json(updated);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+
 app.post("/api/equipment/", async (req, res, next) => {
   const equipment = req.body;
 
   try {
-    const saved = await equipmentModel.create(employee);
+    const saved = await equipmentModel.create(equipment);
     return res.json(saved);
   } catch (err) {
     return next(err);
@@ -111,6 +127,22 @@ app.delete("/api/employees/:id", async (req, res, next) => {
   try {
     const deleted = await req.employee.delete();
     return res.json(deleted);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+app.get("/api/equiptypes", async (req, res) => {
+  const equipTypes = await EquipmentTypes.find().lean()
+  res.json(equipTypes);
+})
+
+app.post("/api/equiptypes/", async (req, res, next) => {
+  const equipType = req.body;
+
+  try {
+    const saved = await EquipmentTypes.create(equipType);
+    return res.json(saved);
   } catch (err) {
     return next(err);
   }

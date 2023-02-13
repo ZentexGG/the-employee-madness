@@ -7,14 +7,15 @@ const Layout = () => (
     <nav>
       <ul>
         <li className="grow">
-          <Link to="/">Employees</Link>
+          <Link to="/">Employees / </Link>
+          <Link to="/equipment">Equipment</Link>
         </li>
         <li>
           <Link to="/create">
             <button type="button">Create Employee</button>
           </Link>
-          <Link to="/equipment">
-            <button type="button">Equipment</button>
+          <Link to="/createitem">
+            <button type="button">Create Equipment</button>
           </Link>
         </li>
       </ul>
