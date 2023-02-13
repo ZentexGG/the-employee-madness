@@ -30,7 +30,7 @@ const EmployeeTable = ({
           <th>Name</th>
           <th>Level</th>
           <th>Position</th>
-          <th />
+          <th>Present</th>
         </tr>
       </thead>
       <tbody>
@@ -39,6 +39,7 @@ const EmployeeTable = ({
             <td>{employee.name}</td>
             <td>{employee.level}</td>
             <td>{employee.position}</td>
+            <td>{employee.present ? "✅" : "❌"}</td>
             <td>
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>

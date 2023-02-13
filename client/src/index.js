@@ -16,6 +16,8 @@ import FormTest from "./Pages/FormTest";
 import ManageEquipment from "./Pages/ManageEquipment";
 import EquipmentUpdater from "./Pages/EquipmentUpdater";
 import EquipmentCreator from "./Pages/EquipmentCreator";
+import MissingEmployees from "./Pages/MissingEmployees";
+import PresentEmployees from "./Pages/PresentEmployees";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "/updateitem/:id",
         element: <EquipmentUpdater />
+      },
+      {
+        path: "/missing",
+        element: <MissingEmployees />
+      },
+      {
+        path: "/present",
+        element: <PresentEmployees />
       }
     ],
   },

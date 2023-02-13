@@ -39,7 +39,7 @@ app.get("/api/equipment/:id", (req, res) => {
 app.get("/api/equipment/", async (req, res) => {
   const equipment = await equipmentModel.find({}).lean();
   return res.json(equipment);
-})
+});
 
 app.patch("/api/equipment/:id", async (req, res, next) => {
   const equipment = req.body;
@@ -51,7 +51,6 @@ app.patch("/api/equipment/:id", async (req, res, next) => {
     return next(err);
   }
 });
-
 
 app.post("/api/equipment/", async (req, res, next) => {
   const equipment = req.body;
@@ -73,11 +72,20 @@ app.delete("/api/equipment/:id", async (req, res, next) => {
   }
 });
 
-
-
 app.get("/api/employees/", async (req, res) => {
   let empName = req.query.name ? req.query.name : "";
-  const employees = await EmployeeModel.find({name: {"$regex": empName, "$options": "i"}}).sort({ created: "desc" });
+  let attendance = req.query.present ? req.query.present : "";
+  let employees = "";
+  if (attendance.toString().length > 0) {
+    employees = await EmployeeModel.find({
+      name: { $regex: empName, $options: "i" },
+      present: attendance,
+    }).sort({ created: "desc" });
+  } else {
+    employees = await EmployeeModel.find({
+      name: { $regex: empName, $options: "i" }
+    }).sort({ created: "desc" });
+  }
   return res.json(employees);
 });
 
@@ -133,9 +141,9 @@ app.delete("/api/employees/:id", async (req, res, next) => {
 });
 
 app.get("/api/equiptypes", async (req, res) => {
-  const equipTypes = await EquipmentTypes.find().lean()
+  const equipTypes = await EquipmentTypes.find().lean();
   res.json(equipTypes);
-})
+});
 
 app.post("/api/equiptypes/", async (req, res, next) => {
   const equipType = req.body;

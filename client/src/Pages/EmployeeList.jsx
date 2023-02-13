@@ -12,13 +12,19 @@ const fetchEmployeesByName = (signal, empName) => {
   );
 };
 
+const fetchEmployeesByAttendance = (signal, attendanceBool) => {
+  return fetch(`/api/employees?present=${attendanceBool}`, { signal }).then(
+    (res) => res.json()
+  );
+};
+
 const deleteEmployee = (id) => {
   return fetch(`/api/employees/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
   );
 };
 
-const EmployeeList = ({ nameFilter }) => {
+const EmployeeList = ({ nameFilter, attendance }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [initialData, setInitialData] = useState(null);
@@ -75,7 +81,7 @@ const EmployeeList = ({ nameFilter }) => {
         let positionSorted = data.sort((a, b) =>
           a["position"].localeCompare(b["position"])
         );
-        setData([...positionSorted])
+        setData([...positionSorted]);
         return;
       case "level":
         let levelSorted = data.sort((a, b) =>
@@ -103,6 +109,22 @@ const EmployeeList = ({ nameFilter }) => {
 
     if (nameFilter) {
       fetchEmployeesByName(controller.signal, nameFilter)
+        .then((employees) => {
+          setLoading(false);
+          setData(employees);
+          setInitialData(employees);
+        })
+        .catch((error) => {
+          if (error.name !== "AbortError") {
+            setData(null);
+            throw error;
+          }
+        });
+    } else if (
+      attendance === true ||
+      attendance === false
+    ) {
+      fetchEmployeesByAttendance(controller.signal, attendance)
         .then((employees) => {
           setLoading(false);
           setData(employees);

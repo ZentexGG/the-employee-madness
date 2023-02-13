@@ -7,8 +7,8 @@ const Layout = () => (
     <nav>
       <ul>
         <li className="grow">
-          <Link to="/">Employees / </Link>
-          <Link to="/equipment">Equipment</Link>
+          <Link to="/">Employees /</Link>
+          <Link to="/equipment">/ Equipment</Link>
         </li>
         <li>
           <Link to="/create">
