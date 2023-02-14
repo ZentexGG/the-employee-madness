@@ -1,4 +1,4 @@
-const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
+const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipment }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -44,6 +44,19 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           name="position"
           id="position"
         />
+      </div>
+
+      <div className="control">
+        <label htmlFor="equipment">Equipment:</label>
+        <select
+          name="equipment"
+          id="equipment"
+          defaultValue={employee ? employee.equipment : null}
+        >
+          {equipment.map((e) => (
+            <option>{e["name"]}</option>
+          ))}
+        </select>
       </div>
 
       <div className="buttons">

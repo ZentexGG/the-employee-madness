@@ -31,6 +31,7 @@ const EmployeeTable = ({
           <th>Level</th>
           <th>Position</th>
           <th>Present</th>
+          <th>Equipment</th>
         </tr>
       </thead>
       <tbody>
@@ -40,6 +41,7 @@ const EmployeeTable = ({
             <td>{employee.level}</td>
             <td>{employee.position}</td>
             <td>{employee.present ? "✅" : "❌"}</td>
+            <td>{employee.equipment.join(", ")}</td>
             <td>
               <Link to={`/update/${employee._id}`}>
                 <button type="button">Update</button>
