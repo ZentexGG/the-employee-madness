@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const equipmentModel = require("./db/equipment.model");
 const EquipmentTypes = require("./db/type.model");
+const ColorModel = require("./db/color.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -80,11 +81,15 @@ app.get("/api/employees/", async (req, res) => {
     employees = await EmployeeModel.find({
       name: { $regex: empName, $options: "i" },
       present: attendance,
-    }).sort({ created: "desc" });
+    })
+      .populate({ path: "favColor", model: ColorModel })
+      .sort({ created: "desc" });
   } else {
     employees = await EmployeeModel.find({
-      name: { $regex: empName, $options: "i" }
-    }).sort({ created: "desc" });
+      name: { $regex: empName, $options: "i" },
+    })
+      .populate({ path: "favColor", model: ColorModel })
+      .sort({ created: "desc" });
   }
   return res.json(employees);
 });
@@ -122,6 +127,7 @@ app.post("/api/employees/", async (req, res, next) => {
 
 app.patch("/api/employees/:id", async (req, res, next) => {
   const employee = req.body;
+  
 
   try {
     const updated = await req.employee.set(employee).save();
@@ -154,6 +160,11 @@ app.post("/api/equiptypes/", async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
+});
+
+app.get("/api/colors", async (req, res) => {
+  const colors = await ColorModel.find({}).lean();
+  res.json(colors);
 });
 
 const main = async () => {

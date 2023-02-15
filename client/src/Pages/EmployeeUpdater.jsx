@@ -22,12 +22,17 @@ const fetchEquipment = () => {
   return fetch(`/api/equipment`).then((res) => res.json());
 }
 
+const fetchColors = () => {
+  return fetch(`/api/colors`).then((res) => res.json());
+}
+
 const EmployeeUpdater = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [employee, setEmployee] = useState(null);
   const [equipment, setEquipment] = useState(null);
+  const [colors, setColors] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [employeeLoading, setEmployeeLoading] = useState(true);
 
@@ -43,11 +48,18 @@ const EmployeeUpdater = () => {
     fetchEquipment()
       .then((equipment) => {
         setEquipment(equipment)
+      })
+      .catch((error) => {
+        throw error;
+      });
+    fetchColors()
+      .then((colors) => {
+        setColors(colors);
         setEmployeeLoading(false);
       })
       .catch((error) => {
         throw error;
-      })
+      });
   }, [id]);
 
   const handleUpdateEmployee = (employee) => {
@@ -75,6 +87,7 @@ const EmployeeUpdater = () => {
       disabled={updateLoading}
       onCancel={() => navigate("/")}
       equipment={equipment}
+      colors={colors}
     />
   );
 };

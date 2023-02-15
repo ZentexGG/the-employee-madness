@@ -8,10 +8,12 @@ const levels = require("./levels.json");
 const positions = require("./positions.json");
 const equipments = require("./equipment.json");
 const equipmentTypes = require("./equipmentTypes.json");
+const colors = require("./colors.json");
 
 const EmployeeModel = require("../db/employee.model");
 const EquipmentModel = require("../db/equipment.model");
 const TypeModel = require("../db/type.model");
+const ColorModel = require("../db/color.model");
 
 const mongoUrl = process.env.MONGO_URL;
 
@@ -24,13 +26,15 @@ const pick = (from) => from[Math.floor(Math.random() * (from.length - 0))];
 
 const populateEmployees = async () => {
   await EmployeeModel.deleteMany({});
+  const favColors = await ColorModel.find({});
 
   const employees = names.map((name) => ({
     name,
     level: pick(levels),
     position: pick(positions),
     present: pick([true, false]),
-    equipment: pick(equipments)
+    equipment: pick(equipments),
+    favColor: pick(favColors)
   }));
 
   await EmployeeModel.create(...employees);
@@ -58,13 +62,22 @@ const populateTypes = async () => {
   console.log("Types created");
 };
 
+const populateColors = async () => {
+  await ColorModel.deleteMany({});
+
+  const color = colors.map((name) => ({ name }));
+  await ColorModel.create(...color);
+  console.log("Colors created");
+};
+
 const main = async () => {
   await mongoose.connect(mongoUrl);
 
-  await populateEmployees();
   await populateEquipment();
   await populateTypes();
-
+  await populateColors();
+  await populateEmployees();
+  
   await mongoose.disconnect();
 };
 
