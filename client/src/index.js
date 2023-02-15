@@ -8,10 +8,16 @@ import ErrorPage from "./Pages/ErrorPage";
 import EmployeeList from "./Pages/EmployeeList";
 import EmployeeCreator from "./Pages/EmployeeCreator";
 import EmployeeUpdater from "./Pages/EmployeeUpdater";
+import Robert from "./Pages/Robert"
 
 import "./index.css";
 import TableTest from "./Pages/TableTest";
 import FormTest from "./Pages/FormTest";
+import ManageEquipment from "./Pages/ManageEquipment";
+import EquipmentUpdater from "./Pages/EquipmentUpdater";
+import EquipmentCreator from "./Pages/EquipmentCreator";
+import MissingEmployees from "./Pages/MissingEmployees";
+import PresentEmployees from "./Pages/PresentEmployees";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +45,30 @@ const router = createBrowserRouter([
         path: "/form-test",
         element: <FormTest />,
       },
+      {
+        path: "/robert",
+        element: <Robert />
+      },
+      {
+        path: "/equipment",
+        element: <ManageEquipment />
+      },
+      {
+        path: "/createitem",
+        element: <EquipmentCreator />
+      },
+      {
+        path: "/updateitem/:id",
+        element: <EquipmentUpdater />
+      },
+      {
+        path: "/missing",
+        element: <MissingEmployees />
+      },
+      {
+        path: "/present",
+        element: <PresentEmployees />
+      }
     ],
   },
 ]);
