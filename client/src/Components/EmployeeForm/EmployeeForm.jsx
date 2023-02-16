@@ -1,4 +1,4 @@
-const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipment, colors }) => {
+const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipment, colors, companies }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -52,9 +52,10 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipment, colors 
           name="equipment"
           id="equipment"
           defaultValue={employee ? employee.equipment : "Select option"}
+          multiple={true}
         >
           {equipment?.map((e) => (
-            <option>{e["name"]}</option>
+            <option key={e["_id"]}>{e["name"]}</option>
           ))}
         </select>
       </div>
@@ -67,7 +68,22 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipment, colors 
           defaultValue={employee ? employee.favColor : null}
         >
           {colors?.map((e) => (
-            <option value={e['_id']} >{e["name"]}</option>
+            <option key={e["_id"]} value={e["_id"]}>
+              {e["name"]}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="control">
+        <label htmlFor="favColor">Company:</label>
+        <select
+          name="company"
+          id="company"
+          defaultValue={employee.company ? employee.company : null}
+        >
+          {companies?.map((e) => (
+            <option key={e["_id"]}>{e["name"]}</option>
           ))}
         </select>
       </div>

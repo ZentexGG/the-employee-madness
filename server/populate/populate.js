@@ -9,11 +9,13 @@ const positions = require("./positions.json");
 const equipments = require("./equipment.json");
 const equipmentTypes = require("./equipmentTypes.json");
 const colors = require("./colors.json");
+const companies = require("./companies.json");
 
 const EmployeeModel = require("../db/employee.model");
 const EquipmentModel = require("../db/equipment.model");
 const TypeModel = require("../db/type.model");
 const ColorModel = require("../db/color.model");
+const CompanyModel = require("../db/company.model");
 
 const mongoUrl = process.env.MONGO_URL;
 
@@ -34,11 +36,19 @@ const populateEmployees = async () => {
     position: pick(positions),
     present: pick([true, false]),
     equipment: pick(equipments),
-    favColor: pick(favColors)
+    favColor: pick(favColors),
+    company: pick(companies)
   }));
 
   await EmployeeModel.create(...employees);
   console.log("Employees created");
+};
+
+const populateCompanies = async () => {
+  await CompanyModel.deleteMany({});
+  const addCompanies = companies.map((name) => ({ name }));
+  await CompanyModel.create(...addCompanies);
+  console.log("Created companies")
 };
 
 const populateEquipment = async () => {
@@ -77,7 +87,8 @@ const main = async () => {
   await populateTypes();
   await populateColors();
   await populateEmployees();
-  
+  await populateCompanies();
+
   await mongoose.disconnect();
 };
 

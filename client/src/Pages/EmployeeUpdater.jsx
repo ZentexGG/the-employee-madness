@@ -26,6 +26,10 @@ const fetchColors = () => {
   return fetch(`/api/colors`).then((res) => res.json());
 }
 
+const fetchCompanies = () => {
+  return fetch(`/api/companies`).then((res) => res.json());
+};
+
 const EmployeeUpdater = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,6 +37,7 @@ const EmployeeUpdater = () => {
   const [employee, setEmployee] = useState(null);
   const [equipment, setEquipment] = useState(null);
   const [colors, setColors] = useState(null);
+  const [companies, setCompanies] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [employeeLoading, setEmployeeLoading] = useState(true);
 
@@ -55,6 +60,14 @@ const EmployeeUpdater = () => {
     fetchColors()
       .then((colors) => {
         setColors(colors);
+      })
+      .catch((error) => {
+        throw error;
+      });
+    
+    fetchCompanies()
+      .then((companies) => {
+        setCompanies(companies);
         setEmployeeLoading(false);
       })
       .catch((error) => {
@@ -88,6 +101,7 @@ const EmployeeUpdater = () => {
       onCancel={() => navigate("/")}
       equipment={equipment}
       colors={colors}
+      companies={companies}
     />
   );
 };

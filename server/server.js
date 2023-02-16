@@ -5,6 +5,7 @@ const EmployeeModel = require("./db/employee.model");
 const equipmentModel = require("./db/equipment.model");
 const EquipmentTypes = require("./db/type.model");
 const ColorModel = require("./db/color.model");
+const CompanyModel = require("./db/company.model");
 
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -124,6 +125,22 @@ app.post("/api/employees/", async (req, res, next) => {
     return next(err);
   }
 });
+
+app.get("/api/companies", async (req, res) => {
+  const companies = await CompanyModel.find().lean();
+  res.json(companies);
+})
+
+app.post("/api/companies", async (req, res, next) => {
+  const company = req.body;
+
+  try {
+    const saved = await CompanyModel.create(company);
+    return res.json(saved);
+  } catch (error) {
+    return next(err);
+  }
+})
 
 app.patch("/api/employees/:id", async (req, res, next) => {
   const employee = req.body;

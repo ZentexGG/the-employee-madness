@@ -9,7 +9,8 @@ const EmployeeSchema = new Schema({
   position: String,
   present: Boolean,
   equipment: Array,
-  favColor: { type: Schema.Types.ObjectId, ref: "Color" },
+  company: String,
+  favColor: { type: Schema.Types.ObjectId },
   created: {
     type: Date,
     default: Date.now,
