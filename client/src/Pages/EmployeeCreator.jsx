@@ -20,11 +20,16 @@ const fetchColors = () => {
   return fetch(`/api/colors`).then((res) => res.json());
 };
 
+const fetchCompanies = () => {
+  return fetch('/api/companies').then((res) => res.json());
+};
+
 const EmployeeCreator = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [equipment, setEquipment] = useState(null);
   const [colors, setColors] = useState(null);
+  const [companies, setCompanies] = useState(null);
 
   const handleCreateEmployee = (employee) => {
     setLoading(true);
@@ -53,6 +58,14 @@ const EmployeeCreator = () => {
     fetchColors()
       .then((colors) => {
         setColors(colors);
+      })
+      .catch((error) => {
+        throw error;
+      });
+    
+    fetchCompanies()
+      .then((companies) => {
+        setCompanies(companies);
         setLoading(false);
       })
       .catch((error) => {
@@ -67,6 +80,7 @@ const EmployeeCreator = () => {
       onSave={handleCreateEmployee}
       equipment={equipment}
       colors={colors}
+      companies={companies}
     />
   );
 };

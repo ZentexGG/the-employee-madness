@@ -80,7 +80,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel, equipment, colors,
         <select
           name="company"
           id="company"
-          defaultValue={employee.company ? employee.company : null}
+          defaultValue={employee ? employee.company : null}
         >
           {companies?.map((e) => (
             <option key={e["_id"]}>{e["name"]}</option>
